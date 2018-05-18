@@ -67,32 +67,23 @@
       },
       "properties": {
         "name": "[parameters('siteName')]",
-        "serverFarm": "[parameters('hostingPlanName')]"
+        "serverFarm": "[parameters('hostingPlanName')]",
+        "siteConfig":{
+            "appSettings":[
+              {
+               "name": "policyFilePath",
+               "value": "[parameters('policyFilePath')]"
+              }
+            ]
+         }      
       },
       "resources": [
         {
-          "apiVersion": "2014-04-01",
-          "type": "config",
-          "name": "web",
-          "dependsOn": [
-            "[concat('Microsoft.Web/Sites/', parameters('siteName'))]"
-          ],
-          "properties": {
-            "appSettings": [
-              {
-                "name": "policyFilePath",
-                "value": "[parameters('policyFilePath')]"
-              }
-            ]
-          }
-        },
-        {
-          "apiVersion": "2014-04-01",
+          "apiVersion":  "2016-03-01",
           "name": "web",
           "type": "sourcecontrols",
           "dependsOn": [
             "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
-            "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
           ],
           "properties": {
             "RepoUrl": "[parameters('repoUrl')]",
